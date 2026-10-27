@@ -1,26 +1,41 @@
 <mvc:View controllerName="project1.controller.Main"
     xmlns:mvc="sap.ui.core.mvc"
+    xmlns:core="sap.ui.core"
     xmlns="sap.m">
     <Page id="page" title="{i18n>title}">
-        <Table id="booksTable" items="{books>/books}">
+        <Table id="booksTable" items="{books>/books}" mode="MultiSelect">
+            <headerToolbar>
+                <OverflowToolbar>
+                    <Title text="{i18n>booksTableTitle}"/>
+                    <ToolbarSpacer/>
+                    <Button text="{i18n>addRecordButton}" press=".onAddRecord" icon="sap-icon://add"/>
+                    <Button text="{i18n>deleteRecordButton}" press=".onDeleteRecord" icon="sap-icon://delete"/>
+                    <ToolbarSeparator/>
+                    <Input id="titleFilterInput" placeholder="{i18n>titleFilterPlaceholder}" width="12rem" change=".onFilter"/>
+                    <Select id="genreSelect" items="{books>/genres}">
+                        <core:Item key="{books>key}" text="{books>text}"/>
+                    </Select>
+                    <Button text="{i18n>filterButton}" icon="sap-icon://filter" press=".onFilter"/>
+                </OverflowToolbar>
+            </headerToolbar>
             <columns>
                 <Column>
-                    <Text text="ID"/>
+                    <Text text="{i18n>idColumn}"/>
                 </Column>
                 <Column>
-                    <Text text="Name"/>
+                    <Text text="{i18n>nameColumn}"/>
                 </Column>
                 <Column>
-                    <Text text="Author"/>
+                    <Text text="{i18n>authorColumn}"/>
                 </Column>
                 <Column>
-                    <Text text="Genre"/>
+                    <Text text="{i18n>genreColumn}"/>
                 </Column>
                 <Column>
-                    <Text text="ReleaseDate"/>
+                    <Text text="{i18n>releaseDateColumn}"/>
                 </Column>
                 <Column>
-                    <Text text="AvailableQuantity"/>
+                    <Text text="{i18n>availableQuantityColumn}"/>
                 </Column>
             </columns>
             <items>
