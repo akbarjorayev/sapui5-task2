@@ -1,10 +1,13 @@
 sap.ui.define([
-    "sap/ui/core/mvc/Controller",
-    "sap/ui/model/json/JSONModel"
-], (Controller, JSONModel) => {
+    "./BaseController",
+    "sap/ui/model/json/JSONModel",
+    "sap/m/MessageToast",
+    "sap/ui/model/Filter",
+    "sap/ui/model/FilterOperator"
+], (BaseController, JSONModel, MessageToast, Filter, FilterOperator) => {
     "use strict";
 
-    return Controller.extend("project1.controller.Main", {
+    return BaseController.extend("project1.controller.Main", {
         onInit() {
             const oData = {
                 books: [
@@ -23,6 +26,67 @@ sap.ui.define([
 
             const oModel = new JSONModel(oData);
             this.getView().setModel(oModel, "books");
+
+            const aUniqueGenres = [...new Set(oData.books.map((oBook) => oBook.Genre))];
+
+            const aGenres = aUniqueGenres.map((sGenre) => ({ key: sGenre, text: sGenre }));
+            aGenres.unshift({ key: "", text: "All Genres" });
+
+            oModel.setProperty("/genres", aGenres);
+        },
+
+        onFilter() {
+            const sQuery = this.byId("titleFilterInput").getValue();
+            const sGenre = this.byId("genreSelect").getSelectedKey();
+
+            const aFilters = [];
+
+            if (sQuery) {
+                aFilters.push(new Filter("Name", FilterOperator.Contains, sQuery));
+            }
+
+            if (sGenre) {
+                aFilters.push(new Filter("Genre", FilterOperator.EQ, sGenre));
+            }
+
+            this.byId("booksTable").getBinding("items").filter(aFilters);
+        },
+
+        onAddRecord() {
+            const oModel = this.getModel("books");
+
+            const aBooks = oModel.getProperty("/books");
+            const oNewBook = {
+                ID: String(aBooks.length + 1),
+                Name: "",
+                Author: "",
+                Genre: "",
+                ReleaseDate: null,
+                AvailableQuantity: 0
+            };
+
+            aBooks.push(oNewBook);
+
+            oModel.setProperty("/books", aBooks);
+        },
+
+        onDeleteRecord() {
+            const oTable = this.byId("booksTable");
+            const aContexts = oTable.getSelectedContexts();
+
+            if (aContexts.length === 0) {
+                MessageToast.show("Please select at least one record to delete.");
+                return;
+            }
+
+            const oModel = this.getModel("books");
+            const aBooks = oModel.getProperty("/books");
+
+            const oSelectedBooks = new Set(aContexts.map((oContext) => oContext.getObject()));
+            const aRemainingBooks = aBooks.filter((oBook) => !oSelectedBooks.has(oBook));
+            oModel.setProperty("/books", aRemainingBooks);
+
+            oTable.removeSelections();
         }
     });
 });
