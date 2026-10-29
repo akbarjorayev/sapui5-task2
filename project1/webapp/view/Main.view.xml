@@ -37,12 +37,18 @@
                 <Column>
                     <Text text="{i18n>availableQuantityColumn}"/>
                 </Column>
+                <Column>
+                    <Text text="{i18n>actionsColumn}"/>
+                </Column>
             </columns>
             <items>
                 <ColumnListItem>
                     <cells>
                         <Text text="{books>ID}" />
-                        <Text text="{books>Name}" />
+                        <HBox>
+                            <Text text="{books>Name}" visible="{= !${books>editMode} }"/>
+                            <Input value="{books>Name}" visible="{= ${books>editMode} }"/>
+                        </HBox>
                         <Text text="{books>Author}" />
                         <Text text="{books>Genre}" />
                         <Text text="{
@@ -53,6 +59,7 @@
                             }
                         }" />
                         <ObjectNumber number="{books>AvailableQuantity}" />
+                        <Button text="{= ${books>editMode} ? ${i18n>actionsSaveButton} : ${i18n>actionsEditButton} }" press=".onActionsButton"/>
                     </cells>
                 </ColumnListItem>
             </items>
