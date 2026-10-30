@@ -9,7 +9,7 @@
                     <Title text="{i18n>booksTableTitle}"/>
                     <ToolbarSpacer/>
                     <Button text="{i18n>addRecordButton}" press=".onAddRecord" icon="sap-icon://add"/>
-                    <Button text="{i18n>deleteRecordButton}" press=".onDeleteRecord" icon="sap-icon://delete"/>
+                    <Button text="{i18n>deleteRecordButton}" press=".onDeleteDialog" icon="sap-icon://delete"/>
                     <ToolbarSeparator/>
                     <Input id="titleFilterInput" placeholder="{i18n>titleFilterPlaceholder}" width="12rem" change=".onFilter"/>
                     <Select id="genreSelect" items="{books>/genres}">

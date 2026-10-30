@@ -2,9 +2,12 @@ sap.ui.define([
     "./BaseController",
     "sap/ui/model/json/JSONModel",
     "sap/m/MessageToast",
+    "sap/m/Dialog",
+    "sap/m/Text",
+    "sap/m/Button",
     "sap/ui/model/Filter",
     "sap/ui/model/FilterOperator"
-], (BaseController, JSONModel, MessageToast, Filter, FilterOperator) => {
+], (BaseController, JSONModel, MessageToast, Dialog, Text, Button, Filter, FilterOperator) => {
     "use strict";
 
     return BaseController.extend("project1.controller.Main", {
@@ -71,7 +74,7 @@ sap.ui.define([
             oModel.setProperty("/books", aBooks);
         },
 
-        onDeleteRecord() {
+        onDeleteDialog() {
             const oTable = this.byId("booksTable");
             const aContexts = oTable.getSelectedContexts();
 
@@ -79,6 +82,34 @@ sap.ui.define([
                 MessageToast.show("Please select at least one record to delete.");
                 return;
             }
+
+            const oDialog = new Dialog({
+                title: "Confirm Deletion",
+                content: new Text({ text: "Are you sure you want to delete selected records?" }),
+                beginButton: new Button({
+                    text: "Yes",
+                    press: () => {
+                        this.onDeleteRecord();
+                        oDialog.close();
+                    }
+                }),
+                endButton: new Button({
+                    text: "No",
+                    press: () => {
+                        oDialog.close();
+                    }
+                }),
+                afterClose: () => {
+                    oDialog.destroy();
+                }
+             });
+
+            oDialog.open();
+        },
+
+        onDeleteRecord() {
+            const oTable = this.byId("booksTable");
+            const aContexts = oTable.getSelectedContexts();
 
             const oModel = this.getModel("books");
             const aBooks = oModel.getProperty("/books");
