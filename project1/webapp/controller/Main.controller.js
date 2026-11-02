@@ -6,8 +6,9 @@ sap.ui.define([
     "sap/m/Text",
     "sap/m/Button",
     "sap/ui/model/Filter",
-    "sap/ui/model/FilterOperator"
-], (BaseController, JSONModel, MessageToast, Dialog, Text, Button, Filter, FilterOperator) => {
+    "sap/ui/model/FilterOperator",
+    "sap/ui/core/Fragment"
+], (BaseController, JSONModel, MessageToast, Dialog, Text, Button, Filter, FilterOperator, Fragment) => {
     "use strict";
 
     return BaseController.extend("project1.controller.Main", {
@@ -33,9 +34,9 @@ sap.ui.define([
             const aUniqueGenres = [...new Set(oData.books.map((oBook) => oBook.Genre))];
 
             const aGenres = aUniqueGenres.map((sGenre) => ({ key: sGenre, text: sGenre }));
-            aGenres.unshift({ key: "", text: "All Genres" });
 
-            oModel.setProperty("/genres", aGenres);
+            oModel.setProperty("/genres", [{ key: "", text: "All Genres" }, ...aGenres]);
+            oModel.setProperty("/addNewBookGenres", aGenres);
         },
 
         onFilter() {
@@ -55,23 +56,82 @@ sap.ui.define([
             this.byId("booksTable").getBinding("items").filter(aFilters);
         },
 
+        onAddDialog() {
+            Fragment.load({
+                id: this.getView().getId(),
+                name: "project1.view.fragment.AddBookDialog",
+                controller: this
+            }).then((oDialog) => {
+                const oNewBook = {
+                    Name: "",
+                    Author: "",
+                    Genre: "",
+                    ReleaseDate: null,
+                    AvailableQuantity: 0,
+                    editMode: false
+                };
+
+                this.getModel("books").setProperty("/newBook", oNewBook);
+
+                this.getView().addDependent(oDialog);
+                oDialog.open();
+            })
+        },
+
+        verifyNewBook(oNewBook) {
+            const sName = (oNewBook.Name || "").trim();
+            const sAuthor = (oNewBook.Author || "").trim();
+            const sGenre = (oNewBook.Genre || "").trim();
+            const sQuantity = (oNewBook.AvailableQuantity || "0").trim();
+            const iQuantity = Number(sQuantity);
+            const oReleaseDate = new Date(oNewBook.ReleaseDate);
+
+            if (!sName || !sAuthor || !sGenre) {
+                return { ok: false };
+            }
+
+            if (!oNewBook.ReleaseDate || oReleaseDate > new Date()) {
+                return { ok: false, message: "Date must be selected and in the past." };
+            }
+
+            if (!Number.isInteger(iQuantity) || iQuantity <= 0) {
+                return { ok: false, message: "Quantity must be a positive integer." };
+            }
+
+            return {
+                ok: true,
+                book: {
+                    ...oNewBook,
+                    AvailableQuantity: iQuantity,
+                    ReleaseDate: oReleaseDate
+                }
+            };
+        },
+
         onAddRecord() {
             const oModel = this.getModel("books");
-
             const aBooks = oModel.getProperty("/books");
-            const oNewBook = {
-                ID: String(aBooks.length + 1),
-                Name: "",
-                Author: "",
-                Genre: "",
-                ReleaseDate: null,
-                AvailableQuantity: 0,
-                editMode: false
-            };
+            const oNewBook = oModel.getProperty("/newBook");
 
-            aBooks.push(oNewBook);
+            const oNewBookVerified = this.verifyNewBook(oNewBook);
+            if (!oNewBookVerified.ok) {
+                MessageToast.show(oNewBookVerified.message || "Please fill all fields.");
+                return;
+            }
+
+            const iMaxId = Math.max(0, ...aBooks.map((oBook) => Number(oBook.ID)));
+            aBooks.push({ ...oNewBookVerified.book, ID: String(iMaxId + 1) });
 
             oModel.setProperty("/books", aBooks);
+            this.onAddDialogClose();
+        },
+
+        onAddDialogClose() {
+            this.byId("AddBookDialog").close();
+        },
+        
+        onAddDialogAfterClose() {
+            this.byId("AddBookDialog").destroy();
         },
 
         onDeleteDialog() {

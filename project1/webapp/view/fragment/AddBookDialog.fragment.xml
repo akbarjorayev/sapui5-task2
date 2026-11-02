@@ -1,0 +1,20 @@
+<Dialog id="AddBookDialog" xmlns="sap.m" xmlns:core="sap.ui.core" afterClose=".onAddDialogAfterClose">
+  <Input value="{books>/newBook/Name}" placeholder="{i18n>addBookDialogNamePlaceholder}" />
+  <Input value="{books>/newBook/Author}" placeholder="{i18n>addBookDialogAuthorPlaceholder}" />
+  <ComboBox id="addGenreSelect"
+    placeholder="{i18n>addBookDialogGenrePlaceholder}"
+    items="{books>/addNewBookGenres}"
+    selectedKey="{books>/newBook/Genre}">
+    <core:Item key="{books>key}" text="{books>text}" />
+  </ComboBox>
+  <Input placeholder="{i18n>addBookDialogReleaseDatePlaceholder}" type="Date"
+    value="{books>/newBook/ReleaseDate}" />
+  <Input placeholder="{i18n>addBookDialogAvailableQuantityPlaceholder}" type="Number"
+    value="{books>/newBook/AvailableQuantity}" />
+  <beginButton>
+    <Button text="{i18n>addBookDialogAddButton}" press=".onAddRecord"></Button>
+  </beginButton>
+  <endButton>
+    <Button text="{i18n>addBookDialogCancelButton}" press=".onAddDialogClose"></Button>
+  </endButton>
+</Dialog>
