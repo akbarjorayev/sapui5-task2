@@ -51,13 +51,7 @@
                         </HBox>
                         <Text text="{books>Author}" />
                         <Text text="{books>Genre}" />
-                        <Text text="{
-                            path: 'books>ReleaseDate',
-                            type: 'sap.ui.model.type.Date',
-                            formatOptions: {
-                                style: 'medium'
-                            }
-                        }" />
+                        <Text text="{= ${i18n>publishedYear} + ' ' + ${books>ReleaseDate}.getFullYear()}" />
                         <ObjectNumber number="{books>AvailableQuantity}" />
                         <Button text="{= ${books>editMode} ? ${i18n>actionsSaveButton} : ${i18n>actionsEditButton} }" press=".onActionsButton"/>
                     </cells>

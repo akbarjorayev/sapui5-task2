@@ -35,7 +35,7 @@ sap.ui.define([
 
             const aGenres = aUniqueGenres.map((sGenre) => ({ key: sGenre, text: sGenre }));
 
-            oModel.setProperty("/genres", [{ key: "", text: "All Genres" }, ...aGenres]);
+            oModel.setProperty("/genres", [{ key: "", text: this.getText("allGenresOption") }, ...aGenres]);
             oModel.setProperty("/addNewBookGenres", aGenres);
         },
 
@@ -91,11 +91,11 @@ sap.ui.define([
             }
 
             if (!oNewBook.ReleaseDate || oReleaseDate > new Date()) {
-                return { ok: false, message: "Date must be selected and in the past." };
+                return { ok: false, message: this.getText("invalidDateMessage") };
             }
 
             if (!Number.isInteger(iQuantity) || iQuantity <= 0) {
-                return { ok: false, message: "Quantity must be a positive integer." };
+                return { ok: false, message: this.getText("invalidQuantityMessage") };
             }
 
             return {
@@ -115,7 +115,7 @@ sap.ui.define([
 
             const oNewBookVerified = this.verifyNewBook(oNewBook);
             if (!oNewBookVerified.ok) {
-                MessageToast.show(oNewBookVerified.message || "Please fill all fields.");
+                MessageToast.show(oNewBookVerified.message || this.getText("fillAllFieldsMessage"));
                 return;
             }
 
@@ -139,22 +139,22 @@ sap.ui.define([
             const aContexts = oTable.getSelectedContexts();
 
             if (aContexts.length === 0) {
-                MessageToast.show("Please select at least one record to delete.");
+                MessageToast.show(this.getText("selectRecordToDeleteMessage"));
                 return;
             }
 
             const oDialog = new Dialog({
-                title: "Confirm Deletion",
-                content: new Text({ text: "Are you sure you want to delete selected records?" }),
+                title: this.getText("deleteDialogTitle"),
+                content: new Text({ text: this.getText("deleteDialogMessage") }),
                 beginButton: new Button({
-                    text: "Yes",
+                    text: this.getText("deleteDialogYesButton"),
                     press: () => {
                         this.onDeleteRecord();
                         oDialog.close();
                     }
                 }),
                 endButton: new Button({
-                    text: "No",
+                    text: this.getText("deleteDialogNoButton"),
                     press: () => {
                         oDialog.close();
                     }

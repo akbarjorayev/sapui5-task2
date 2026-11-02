@@ -1,4 +1,4 @@
-<Dialog id="AddBookDialog" xmlns="sap.m" xmlns:core="sap.ui.core" afterClose=".onAddDialogAfterClose">
+<Dialog id="AddBookDialog" xmlns="sap.m" xmlns:core="sap.ui.core" afterClose=".onAddDialogAfterClose" title="{i18n>addBookDialogTitle}">
   <Input value="{books>/newBook/Name}" placeholder="{i18n>addBookDialogNamePlaceholder}" />
   <Input value="{books>/newBook/Author}" placeholder="{i18n>addBookDialogAuthorPlaceholder}" />
   <ComboBox id="addGenreSelect"
