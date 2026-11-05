@@ -1,0 +1,47 @@
+<mvc:View
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns="sap.m">
+    <Table id="v4ProductsTable" items="{v4>/Products}">
+        <headerToolbar>
+            <OverflowToolbar>
+                <Title text="{i18n>productsTableTitle}" />
+            </OverflowToolbar>
+        </headerToolbar>
+        <columns>
+            <Column>
+                <Text text="{i18n>idColumn}" />
+            </Column>
+            <Column>
+                <Text text="{i18n>nameColumn}" />
+            </Column>
+            <Column>
+                <Text text="{i18n>descriptionColumn}" />
+            </Column>
+            <Column>
+                <Text text="{i18n>releaseDateColumn}" />
+            </Column>
+            <Column>
+                <Text text="{i18n>discontinuedDateColumn}" />
+            </Column>
+            <Column>
+                <Text text="{i18n>ratingColumn}" />
+            </Column>
+            <Column>
+                <Text text="{i18n>priceColumn}" />
+            </Column>
+        </columns>
+        <items>
+            <ColumnListItem>
+                <cells>
+                    <Text text="{v4>ID}" />
+                    <Text text="{v4>Name}" />
+                    <Text text="{v4>Description}" />
+                    <Text text="{v4>ReleaseDate}" />
+                    <Text text="{v4>DiscontinuedDate}" />
+                    <RatingIndicator value="{v4>Rating}" editable="false" />
+                    <ObjectNumber number="{v4>Price}" />
+                </cells>
+            </ColumnListItem>
+        </items>
+    </Table>
+</mvc:View>

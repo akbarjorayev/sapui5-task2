@@ -11,7 +11,7 @@ sap.ui.define([
 ], (BaseController, JSONModel, MessageToast, Dialog, Text, Button, Filter, FilterOperator, Fragment) => {
     "use strict";
 
-    return BaseController.extend("project1.controller.Main", {
+    return BaseController.extend("project1.controller.JSON", {
         onInit() {
             const oData = {
                 books: [
