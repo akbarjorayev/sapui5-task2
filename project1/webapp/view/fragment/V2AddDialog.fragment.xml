@@ -1,0 +1,36 @@
+<Dialog id="v2AddDialog" xmlns:m="sap.m" xmlns="sap.m" xmlns:core="sap.ui.core"
+  title="{i18n>v2AddDialogTitle}" afterClose=".onAddDialogAfterClose">
+  <Input value="{newProduct>/Name}"
+    valueState="{newProduct>/NameState}"
+    valueStateText="{i18n>v2AddDialogRequiredField}" placeholder="{i18n>v2AddDialogNamePlaceholder}"
+    liveChange=".onAddDialogFieldChange" />
+  <TextArea value="{newProduct>/Description}"
+    valueState="{newProduct>/DescriptionState}"
+    valueStateText="{i18n>v2AddDialogRequiredField}"
+    placeholder="{i18n>v2AddDialogDescriptionPlaceholder}" liveChange=".onAddDialogFieldChange" />
+  <Input value="{newProduct>/ReleaseDate}"
+    valueState="{newProduct>/ReleaseDateState}"
+    valueStateText="{i18n>v2AddDialogRequiredField}"
+    placeholder="{i18n>v2AddDialogReleaseDatePlaceholder}"
+    type="Date" liveChange=".onAddDialogFieldChange" />
+  <Input value="{newProduct>/DiscontinuedDate}"
+    valueState="{newProduct>/DiscontinuedDateState}"
+    valueStateText="{i18n>v2AddDialogRequiredField}"
+    placeholder="{i18n>v2AddDialogDiscontinuedDatePlaceholder}" type="Date"
+    liveChange=".onAddDialogFieldChange" />
+  <RatingIndicator value="{newProduct>/Rating}" maxValue="5" editable="true"
+    change=".onAddDialogFieldChange" />
+  <ObjectStatus text="{i18n>v2AddDialogRequiredField}" state="Error"
+    visible="{= ${newProduct>/RatingState} === 'Error' }" />
+  <Input value="{newProduct>/Price}"
+    valueState="{newProduct>/PriceState}"
+    valueStateText="{i18n>v2AddDialogRequiredField}"
+    placeholder="{i18n>v2AddDialogPricePlaceholder}" type="Number"
+    liveChange=".onAddDialogFieldChange" />
+  <beginButton>
+    <Button text="{i18n>v2AddDialogSaveButton}" press=".onSaveRecord" />
+  </beginButton>
+  <endButton>
+    <Button text="{i18n>v2AddDialogCancelButton}" press=".onAddDialogClose" />
+  </endButton>
+</Dialog>
