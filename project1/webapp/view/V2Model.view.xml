@@ -1,0 +1,49 @@
+<mvc:View
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns="sap.m">
+    <Table id="v2ProductsTable" items="{v2>/Products}">
+        <headerToolbar>
+            <OverflowToolbar>
+                <Title text="{i18n>productsTableTitle}" />
+            </OverflowToolbar>
+        </headerToolbar>
+        <columns>
+            <Column>
+                <Text text="{i18n>idColumn}" />
+            </Column>
+            <Column>
+                <Text text="{i18n>nameColumn}" />
+            </Column>
+            <Column>
+                <Text text="{i18n>descriptionColumn}" />
+            </Column>
+            <Column>
+                <Text text="{i18n>releaseDateColumn}" />
+            </Column>
+            <Column>
+                <Text text="{i18n>discontinuedDateColumn}" />
+            </Column>
+            <Column>
+                <Text text="{i18n>ratingColumn}" />
+            </Column>
+            <Column>
+                <Text text="{i18n>priceColumn}" />
+            </Column>
+        </columns>
+        <items>
+            <ColumnListItem>
+                <cells>
+                    <Text text="{v2>ID}" />
+                    <Text text="{v2>Name}" />
+                    <Text text="{v2>Description}" />
+                    <Text
+                        text="{path: 'v2>ReleaseDate', type: 'sap.ui.model.type.Date', formatOptions: {style: 'medium'}}" />
+                    <Text
+                        text="{path: 'v2>DiscontinuedDate', type: 'sap.ui.model.type.Date', formatOptions: {style: 'medium'}}" />
+                    <RatingIndicator value="{v2>Rating}" editable="false" />
+                    <ObjectNumber number="{v2>Price}" />
+                </cells>
+            </ColumnListItem>
+        </items>
+    </Table>
+</mvc:View>

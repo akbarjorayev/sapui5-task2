@@ -1,62 +1,20 @@
-<mvc:View controllerName="project1.controller.Main"
+<mvc:View
     xmlns:mvc="sap.ui.core.mvc"
     xmlns:core="sap.ui.core"
     xmlns="sap.m">
     <Page id="page" title="{i18n>title}">
-        <Table id="booksTable" items="{books>/books}" mode="MultiSelect">
-            <headerToolbar>
-                <OverflowToolbar>
-                    <Title text="{i18n>booksTableTitle}"/>
-                    <ToolbarSpacer/>
-                    <Button text="{i18n>addRecordButton}" press=".onAddDialog" icon="sap-icon://add"/>
-                    <Button text="{i18n>deleteRecordButton}" press=".onDeleteDialog" icon="sap-icon://delete"/>
-                    <ToolbarSeparator/>
-                    <Input id="titleFilterInput" placeholder="{i18n>titleFilterPlaceholder}" width="12rem" change=".onFilter"/>
-                    <Select id="genreSelect" items="{books>/genres}">
-                        <core:Item key="{books>key}" text="{books>text}"/>
-                    </Select>
-                    <Button text="{i18n>filterButton}" icon="sap-icon://filter" press=".onFilter"/>
-                </OverflowToolbar>
-            </headerToolbar>
-            <columns>
-                <Column>
-                    <Text text="{i18n>idColumn}"/>
-                </Column>
-                <Column>
-                    <Text text="{i18n>nameColumn}"/>
-                </Column>
-                <Column>
-                    <Text text="{i18n>authorColumn}"/>
-                </Column>
-                <Column>
-                    <Text text="{i18n>genreColumn}"/>
-                </Column>
-                <Column>
-                    <Text text="{i18n>releaseDateColumn}"/>
-                </Column>
-                <Column>
-                    <Text text="{i18n>availableQuantityColumn}"/>
-                </Column>
-                <Column>
-                    <Text text="{i18n>actionsColumn}"/>
-                </Column>
-            </columns>
+        <IconTabBar id="modelTabBar" expandable="false">
             <items>
-                <ColumnListItem>
-                    <cells>
-                        <Text text="{books>ID}" />
-                        <HBox>
-                            <Text text="{books>Name}" visible="{= !${books>editMode} }"/>
-                            <Input value="{books>Name}" visible="{= ${books>editMode} }"/>
-                        </HBox>
-                        <Text text="{books>Author}" />
-                        <Text text="{books>Genre}" />
-                        <Text text="{= ${i18n>publishedYear} + ' ' + ${books>ReleaseDate}.getFullYear()}" />
-                        <ObjectNumber number="{books>AvailableQuantity}" />
-                        <Button text="{= ${books>editMode} ? ${i18n>actionsSaveButton} : ${i18n>actionsEditButton} }" press=".onActionsButton"/>
-                    </cells>
-                </ColumnListItem>
+                <IconTabFilter key="json" text="{i18n>jsonModelTab}">
+                    <mvc:XMLView viewName="project1.view.JSON" />
+                </IconTabFilter>
+                <IconTabFilter key="v2" text="{i18n>oDataV2ModelTab}">
+                    <mvc:XMLView viewName="project1.view.V2Model" />
+                </IconTabFilter>
+                <IconTabFilter key="v4" text="{i18n>oDataV4ModelTab}">
+                    <mvc:XMLView viewName="project1.view.V4Model" />
+                </IconTabFilter>
             </items>
-        </Table>
+        </IconTabBar>
     </Page>
 </mvc:View>

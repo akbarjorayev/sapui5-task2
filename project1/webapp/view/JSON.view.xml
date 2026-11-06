@@ -1,0 +1,63 @@
+<mvc:View controllerName="project1.controller.JSON"
+  xmlns:mvc="sap.ui.core.mvc"
+  xmlns:core="sap.ui.core"
+  xmlns="sap.m">
+  <Table id="booksTable" items="{books>/books}" mode="MultiSelect">
+    <headerToolbar>
+      <OverflowToolbar>
+        <Title text="{i18n>booksTableTitle}" />
+        <ToolbarSpacer />
+        <Button text="{i18n>addRecordButton}" press=".onAddDialog" icon="sap-icon://add" />
+        <Button text="{i18n>deleteRecordButton}" press=".onDeleteDialog" icon="sap-icon://delete" />
+        <ToolbarSeparator />
+        <Input id="titleFilterInput" placeholder="{i18n>titleFilterPlaceholder}" width="12rem"
+          change=".onFilter" />
+        <Select id="genreSelect" items="{books>/genres}">
+          <core:Item key="{books>key}" text="{books>text}" />
+        </Select>
+        <Button text="{i18n>filterButton}" icon="sap-icon://filter" press=".onFilter" />
+      </OverflowToolbar>
+    </headerToolbar>
+    <columns>
+      <Column>
+        <Text text="{i18n>idColumn}" />
+      </Column>
+      <Column>
+        <Text text="{i18n>nameColumn}" />
+      </Column>
+      <Column>
+        <Text text="{i18n>authorColumn}" />
+      </Column>
+      <Column>
+        <Text text="{i18n>genreColumn}" />
+      </Column>
+      <Column>
+        <Text text="{i18n>releaseDateColumn}" />
+      </Column>
+      <Column>
+        <Text text="{i18n>availableQuantityColumn}" />
+      </Column>
+      <Column>
+        <Text text="{i18n>actionsColumn}" />
+      </Column>
+    </columns>
+    <items>
+      <ColumnListItem>
+        <cells>
+          <Text text="{books>ID}" />
+          <HBox>
+            <Text text="{books>Name}" visible="{= !${books>editMode} }" />
+            <Input value="{books>Name}" visible="{= ${books>editMode} }" />
+          </HBox>
+          <Text text="{books>Author}" />
+          <Text text="{books>Genre}" />
+          <Text text="{= ${i18n>publishedYear} + ' ' + ${books>ReleaseDate}.getFullYear()}" />
+          <ObjectNumber number="{books>AvailableQuantity}" />
+          <Button
+            text="{= ${books>editMode} ? ${i18n>actionsSaveButton} : ${i18n>actionsEditButton} }"
+            press=".onActionsButton" />
+        </cells>
+      </ColumnListItem>
+    </items>
+  </Table>
+</mvc:View>
