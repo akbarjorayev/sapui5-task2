@@ -8,8 +8,8 @@ sap.ui.define([
         return this.getView().getModel(sName);
       },
 
-      getText(sKey) {
-        return this.getOwnerComponent().getModel("i18n").getResourceBundle().getText(sKey);
+      getText(sKey, aArgs) {
+        return this.getOwnerComponent().getModel("i18n").getResourceBundle().getText(sKey, aArgs);
       }
     });
 });

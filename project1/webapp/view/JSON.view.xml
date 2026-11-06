@@ -51,7 +51,7 @@
           </HBox>
           <Text text="{books>Author}" />
           <Text text="{books>Genre}" />
-          <Text text="{= ${i18n>publishedYear} + ' ' + ${books>ReleaseDate}.getFullYear()}" />
+          <Text text="{path: 'books>ReleaseDate', formatter: '.formatter.publishedYear'}" />
           <ObjectNumber number="{books>AvailableQuantity}" />
           <Button
             text="{= ${books>editMode} ? ${i18n>actionsSaveButton} : ${i18n>actionsEditButton} }"

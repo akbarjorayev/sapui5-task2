@@ -7,8 +7,9 @@ sap.ui.define([
     "sap/m/Button",
     "sap/ui/model/Filter",
     "sap/ui/model/FilterOperator",
-    "sap/ui/core/Fragment"
-], (BaseController, JSONModel, MessageToast, Dialog, Text, Button, Filter, FilterOperator, Fragment) => {
+    "sap/ui/core/Fragment",
+    "../model/formatter"
+], (BaseController, JSONModel, MessageToast, Dialog, Text, Button, Filter, FilterOperator, Fragment, formatter) => {
     "use strict";
 
     return BaseController.extend("project1.controller.JSON", {
@@ -187,6 +188,8 @@ sap.ui.define([
             const sPath = oContext.getPath() + "/editMode";
 
             oModel.setProperty(sPath, !oModel.getProperty(sPath));
-        }
+        },
+
+        formatter: formatter
     });
 });
