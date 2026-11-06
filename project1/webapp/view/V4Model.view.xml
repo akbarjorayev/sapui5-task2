@@ -36,8 +36,10 @@
                     <Text text="{v4>ID}" />
                     <Text text="{v4>Name}" />
                     <Text text="{v4>Description}" />
-                    <Text text="{v4>ReleaseDate}" />
-                    <Text text="{v4>DiscontinuedDate}" />
+                    <Text
+                        text="{path: 'v4>ReleaseDate', type: 'sap.ui.model.odata.type.DateTimeOffset', constraints: {precision: 3}, formatOptions: {pattern: 'MMM d, y'}}" />
+                    <Text
+                        text="{path: 'v4>DiscontinuedDate', type: 'sap.ui.model.odata.type.DateTimeOffset', constraints: {precision: 3}, formatOptions: {pattern: 'MMM d, y'}}" />
                     <RatingIndicator value="{v4>Rating}" editable="false" />
                     <ObjectNumber number="{v4>Price}" />
                 </cells>

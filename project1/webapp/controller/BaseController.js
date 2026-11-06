@@ -1,15 +1,16 @@
-sap.ui.define([
-    "sap/ui/core/mvc/Controller",
-], (Controller) => {
-    "use strict";
+sap.ui.define(["sap/ui/core/mvc/Controller"], (Controller) => {
+  "use strict";
 
-    return Controller.extend("project1.controller.BaseController", {
-      getModel(sName) {
-        return this.getView().getModel(sName);
-      },
+  return Controller.extend("project1.controller.BaseController", {
+    getModel(sName) {
+      return this.getView().getModel(sName);
+    },
 
-      getText(sKey, aArgs) {
-        return this.getOwnerComponent().getModel("i18n").getResourceBundle().getText(sKey, aArgs);
-      }
-    });
+    getText(sKey, aArgs) {
+      return this.getOwnerComponent()
+        .getModel("i18n")
+        .getResourceBundle()
+        .getText(sKey, aArgs);
+    },
+  });
 });
