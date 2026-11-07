@@ -5,8 +5,18 @@ sap.ui.define(
     "sap/m/MessageToast",
     "sap/m/MessageBox",
     "sap/ui/core/Fragment",
+    "sap/ui/model/Filter",
+    "sap/ui/model/FilterOperator",
   ],
-  (BaseController, JSONModel, MessageToast, MessageBox, Fragment) => {
+  (
+    BaseController,
+    JSONModel,
+    MessageToast,
+    MessageBox,
+    Fragment,
+    Filter,
+    FilterOperator,
+  ) => {
     "use strict";
 
     return BaseController.extend("project1.controller.V2Model", {
@@ -193,6 +203,20 @@ sap.ui.define(
             MessageToast.show(this.getText("v2DeleteSuccessMessage")),
           error: () => MessageBox.error(this.getText("v2DeleteErrorMessage")),
         });
+      },
+
+      onProductNameFilter(oEvent) {
+        const sQuery = oEvent.getParameter("value");
+        const oTable = this.byId("v2ProductsTable");
+        const oBinding = oTable.getBinding("items");
+
+        if (!sQuery) {
+          oBinding.filter([]);
+          return;
+        }
+
+        const oFilter = new Filter("Name", FilterOperator.Contains, sQuery);
+        oBinding.filter(oFilter);
       },
     });
   },

@@ -6,6 +6,8 @@
             <OverflowToolbar>
                 <Title text="{i18n>productsTableTitle}" />
                 <ToolbarSpacer />
+                <Input placeholder="{i18n>v2ProductSearchPlaceholder}"
+                    liveChange=".onProductNameFilter" width="12rem" />
                 <Button text="{i18n>v2AddRecordButton}" press=".onAddRecord"
                     icon="sap-icon://add" />
                 <Button text="{i18n>v2DeleteRecordButton}" press=".onDeleteRecord"
