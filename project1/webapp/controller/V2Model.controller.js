@@ -7,6 +7,7 @@ sap.ui.define(
     "sap/ui/core/Fragment",
     "sap/ui/model/Filter",
     "sap/ui/model/FilterOperator",
+    "sap/ui/model/Sorter",
   ],
   (
     BaseController,
@@ -16,10 +17,30 @@ sap.ui.define(
     Fragment,
     Filter,
     FilterOperator,
+    Sorter,
   ) => {
     "use strict";
 
     return BaseController.extend("project1.controller.V2Model", {
+      onInit() {
+        const oSortModel = new JSONModel({
+          columns: [
+            { key: "ID", text: this.getText("idColumn") },
+            { key: "Name", text: this.getText("nameColumn") },
+            { key: "Description", text: this.getText("descriptionColumn") },
+            { key: "ReleaseDate", text: this.getText("releaseDateColumn") },
+            {
+              key: "DiscontinuedDate",
+              text: this.getText("discontinuedDateColumn"),
+            },
+            { key: "Rating", text: this.getText("ratingColumn") },
+            { key: "Price", text: this.getText("priceColumn") },
+          ],
+        });
+
+        this.getView().setModel(oSortModel, "sort");
+      },
+
       verifyProduct(oProduct) {
         const sName = (oProduct.Name || "").trim();
         const sDescription = (oProduct.Description || "").trim();
@@ -217,6 +238,15 @@ sap.ui.define(
 
         const oFilter = new Filter("Name", FilterOperator.Contains, sQuery);
         oBinding.filter(oFilter);
+      },
+
+      onSortColumnChange(oEvent) {
+        const sSelectedKey = oEvent.getParameter("selectedItem").getKey();
+        const oTable = this.byId("v2ProductsTable");
+        const oBinding = oTable.getBinding("items");
+        const oSorter = new Sorter(sSelectedKey, true);
+
+        oBinding.sort(oSorter);
       },
     });
   },
