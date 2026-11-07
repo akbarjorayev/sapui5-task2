@@ -34,6 +34,9 @@
             <Column>
                 <Text text="{i18n>priceColumn}" />
             </Column>
+            <Column>
+                <Text text="{i18n>v2EditColumn}" />
+            </Column>
         </columns>
         <items>
             <ColumnListItem>
@@ -47,6 +50,7 @@
                         text="{path: 'v2>DiscontinuedDate', type: 'sap.ui.model.type.Date', formatOptions: {style: 'medium'}}" />
                     <RatingIndicator value="{v2>Rating}" editable="false" />
                     <ObjectNumber number="{v2>Price}" />
+                    <Button text="{i18n>v2EditButton}" press=".onEditRecord" />
                 </cells>
             </ColumnListItem>
         </items>

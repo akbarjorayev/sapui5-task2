@@ -10,17 +10,17 @@ sap.ui.define(
     "use strict";
 
     return BaseController.extend("project1.controller.V2Model", {
-      verifyNewProduct(oNewProduct) {
-        const sName = (oNewProduct.Name || "").trim();
-        const sDescription = (oNewProduct.Description || "").trim();
-        const sPrice = String(oNewProduct.Price || "").trim();
+      verifyProduct(oProduct) {
+        const sName = (oProduct.Name || "").trim();
+        const sDescription = (oProduct.Description || "").trim();
+        const sPrice = String(oProduct.Price || "").trim();
         const fPrice = Number(sPrice);
-        const iRating = Number(oNewProduct.Rating);
-        const oReleaseDate = oNewProduct.ReleaseDate
-          ? new Date(oNewProduct.ReleaseDate)
+        const iRating = Number(oProduct.Rating);
+        const oReleaseDate = oProduct.ReleaseDate
+          ? new Date(oProduct.ReleaseDate)
           : null;
-        const oDiscontinuedDate = oNewProduct.DiscontinuedDate
-          ? new Date(oNewProduct.DiscontinuedDate)
+        const oDiscontinuedDate = oProduct.DiscontinuedDate
+          ? new Date(oProduct.DiscontinuedDate)
           : null;
 
         const bNameValid = !!sName;
@@ -50,8 +50,9 @@ sap.ui.define(
 
         return {
           ok: true,
+          editMode: oProduct.editMode,
+          editPath: oProduct.editPath,
           product: {
-            ...oNewProduct,
             Name: sName,
             Description: sDescription,
             ReleaseDate: oReleaseDate,
@@ -63,28 +64,42 @@ sap.ui.define(
       },
 
       setFieldState(sControlId, bInvalid) {
-        const oModel = this.getModel("newProduct");
+        const oModel = this.getModel("productDialog");
         oModel.setProperty(`/${sControlId}State`, bInvalid ? "Error" : "None");
       },
 
-      onAddDialogFieldChange(oEvent) {
+      onProductDialogFieldChange(oEvent) {
         const sPath = oEvent.getSource().getBinding("value").getPath();
-        this.getModel("newProduct").setProperty(`${sPath}State`, "None");
+        this.getModel("productDialog").setProperty(`${sPath}State`, "None");
       },
 
       onSaveRecord() {
-        const oResult = this.verifyNewProduct(
-          this.getModel("newProduct").getData(),
+        const oResult = this.verifyProduct(
+          this.getModel("productDialog").getData(),
         );
         if (!oResult.ok) {
           return;
         }
 
         const oModel = this.getModel("v2");
+
+        if (oResult.editMode) {
+          oModel.update(oResult.editPath, oResult.product, {
+            success: () => {
+              MessageToast.show(this.getText("v2EditSuccessMessage"));
+              this.onProductDialogClose();
+            },
+            error: () => {
+              MessageBox.error(this.getText("v2EditErrorMessage"));
+            },
+          });
+          return;
+        }
+
         oModel.create("/Products", oResult.product, {
           success: () => {
             MessageToast.show(this.getText("v2AddSuccessMessage"));
-            this.onAddDialogClose();
+            this.onProductDialogClose();
           },
           error: () => {
             MessageBox.error(this.getText("v2AddErrorMessage"));
@@ -95,32 +110,67 @@ sap.ui.define(
       onAddRecord() {
         Fragment.load({
           id: this.getView().getId(),
-          name: "project1.view.fragment.V2AddDialog",
+          name: "project1.view.fragment.V2ProductDialog",
           controller: this,
         }).then((oDialog) => {
-          const oNewProduct = {
+          const oProduct = {
             Name: "",
             Description: "",
             ReleaseDate: null,
             DiscontinuedDate: null,
             Rating: 0,
             Price: "",
+            editMode: false,
           };
 
-          const oNewProductModel = new JSONModel(oNewProduct);
-          this.getView().setModel(oNewProductModel, "newProduct");
+          const oProductDialogModel = new JSONModel(oProduct);
+          this.getView().setModel(oProductDialogModel, "productDialog");
 
           this.getView().addDependent(oDialog);
           oDialog.open();
         });
       },
 
-      onAddDialogClose() {
-        this.byId("v2AddDialog").close();
+      onProductDialogClose() {
+        this.byId("v2ProductDialog").close();
       },
 
-      onAddDialogAfterClose() {
-        this.byId("v2AddDialog").destroy();
+      onProductDialogAfterClose() {
+        this.byId("v2ProductDialog").destroy();
+      },
+
+      onEditRecord(oEvent) {
+        const oSelectedItem = oEvent.getSource().getParent();
+        const sPath = oSelectedItem.getBindingContext("v2").getPath();
+        const oModel = this.getModel("v2");
+        const oProductData = oModel.getProperty(sPath);
+
+        Fragment.load({
+          id: this.getView().getId(),
+          name: "project1.view.fragment.V2ProductDialog",
+          controller: this,
+        }).then((oDialog) => {
+          const oProduct = {
+            Name: oProductData.Name,
+            Description: oProductData.Description,
+            ReleaseDate: this._toDateString(oProductData.ReleaseDate),
+            DiscontinuedDate: this._toDateString(oProductData.DiscontinuedDate),
+            Rating: oProductData.Rating,
+            Price: oProductData.Price,
+            editMode: true,
+            editPath: sPath,
+          };
+
+          const oProductDialogModel = new JSONModel(oProduct);
+          this.getView().setModel(oProductDialogModel, "productDialog");
+
+          this.getView().addDependent(oDialog);
+          oDialog.open();
+        });
+      },
+
+      _toDateString(oDate) {
+        return oDate ? oDate.toISOString().split("T")[0] : "";
       },
 
       onDeleteRecord() {
