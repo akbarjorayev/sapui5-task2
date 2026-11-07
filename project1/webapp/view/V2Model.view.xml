@@ -1,10 +1,17 @@
-<mvc:View
+<mvc:View controllerName="project1.controller.V2Model"
     xmlns:mvc="sap.ui.core.mvc"
     xmlns="sap.m">
-    <Table id="v2ProductsTable" items="{v2>/Products}">
+    <Table id="v2ProductsTable" items="{v2>/Products}" mode="MultiSelect">
         <headerToolbar>
             <OverflowToolbar>
                 <Title text="{i18n>productsTableTitle}" />
+                <ToolbarSpacer />
+                <Input placeholder="{i18n>v2ProductSearchPlaceholder}"
+                    liveChange=".onProductNameFilter" width="12rem" />
+                <Button text="{i18n>v2AddRecordButton}" press=".onAddRecord"
+                    icon="sap-icon://add" />
+                <Button text="{i18n>v2DeleteRecordButton}" press=".onDeleteRecord"
+                    icon="sap-icon://delete" />
             </OverflowToolbar>
         </headerToolbar>
         <columns>
@@ -29,6 +36,9 @@
             <Column>
                 <Text text="{i18n>priceColumn}" />
             </Column>
+            <Column>
+                <Text text="{i18n>v2EditColumn}" />
+            </Column>
         </columns>
         <items>
             <ColumnListItem>
@@ -42,6 +52,7 @@
                         text="{path: 'v2>DiscontinuedDate', type: 'sap.ui.model.type.Date', formatOptions: {style: 'medium'}}" />
                     <RatingIndicator value="{v2>Rating}" editable="false" />
                     <ObjectNumber number="{v2>Price}" />
+                    <Button text="{i18n>v2EditButton}" press=".onEditRecord" />
                 </cells>
             </ColumnListItem>
         </items>
