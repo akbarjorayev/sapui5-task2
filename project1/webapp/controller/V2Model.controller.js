@@ -248,6 +248,22 @@ sap.ui.define(
 
         oBinding.sort(oSorter);
       },
+
+      onProductPress(oEvent) {
+        const oClickedItem = oEvent.getSource();
+        const oContext = oClickedItem.getBindingContext("v2");
+
+        if (!oContext) {
+          return;
+        }
+
+        const iProductID = oContext.getProperty("ID");
+        const oRouter = this.getOwnerComponent().getRouter();
+
+        oRouter.navTo("RouteProduct", {
+          ProductID: iProductID,
+        });
+      },
     });
   },
 );

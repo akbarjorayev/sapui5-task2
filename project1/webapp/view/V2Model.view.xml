@@ -46,7 +46,7 @@
             </Column>
         </columns>
         <items>
-            <ColumnListItem>
+            <ColumnListItem type="Active" press=".onProductPress">
                 <cells>
                     <Text text="{v2>ID}" />
                     <Text text="{v2>Name}" />
