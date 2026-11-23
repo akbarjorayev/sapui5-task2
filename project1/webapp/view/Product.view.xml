@@ -1,0 +1,70 @@
+<mvc:View
+  controllerName="project1.controller.Product"
+  xmlns:mvc="sap.ui.core.mvc"
+  xmlns="sap.uxap"
+  xmlns:m="sap.m"
+  xmlns:form="sap.ui.layout.form"
+  height="100%">
+  <ObjectPageLayout id="productObjectPage" upperCaseAnchorBar="false">
+    <headerTitle>
+      <ObjectPageHeader objectTitle="{v2>Name}">
+      </ObjectPageHeader>
+    </headerTitle>
+    <sections>
+      <ObjectPageSection titleUppercase="false" title="{i18n>productInfoSectionTitle}">
+        <subSections>
+          <ObjectPageSubSection titleUppercase="false">
+            <blocks>
+              <form:SimpleForm editable="false" layout="ColumnLayout">
+                <form:content>
+                  <m:Label text="{i18n>idColumn}" />
+                  <m:Text text="{v2>ID}" />
+                  <m:Label text="{i18n>nameColumn}" />
+                  <m:Text text="{v2>Name}" />
+                  <m:Label text="{i18n>descriptionColumn}" />
+                  <m:Text text="{v2>Description}" />
+                  <m:Label text="{i18n>releaseDateColumn}" />
+                  <m:Text
+                    text="{path: 'v2>ReleaseDate', type: 'sap.ui.model.type.Date', formatOptions: {style: 'medium'}}" />
+                  <m:Label text="{i18n>discontinuedDateColumn}" />
+                  <m:Text
+                    text="{path: 'v2>DiscontinuedDate', type: 'sap.ui.model.type.Date', formatOptions: {style: 'medium'}}" />
+                  <m:Label text="{i18n>ratingColumn}" />
+                  <m:RatingIndicator value="{v2>Rating}" editable="false" />
+                  <m:Label text="{i18n>priceColumn}" />
+                  <m:ObjectNumber number="{v2>Price}" />
+                </form:content>
+              </form:SimpleForm>
+            </blocks>
+          </ObjectPageSubSection>
+        </subSections>
+      </ObjectPageSection>
+      <ObjectPageSection titleUppercase="false" title="{i18n>supplierSectionTitle}">
+        <subSections>
+          <ObjectPageSubSection titleUppercase="false">
+            <blocks>
+              <form:SimpleForm editable="false" layout="ColumnLayout">
+                <form:content>
+                  <m:Label text="{i18n>idColumn}" />
+                  <m:Text text="{v2>Supplier/ID}" />
+                  <m:Label text="{i18n>nameColumn}" />
+                  <m:Text text="{v2>Supplier/Name}" />
+                  <m:Label text="{i18n>supplierStreetLabel}" />
+                  <m:Text text="{v2>Supplier/Address/Street}" />
+                  <m:Label text="{i18n>supplierCityLabel}" />
+                  <m:Text text="{v2>Supplier/Address/City}" />
+                  <m:Label text="{i18n>supplierStateLabel}" />
+                  <m:Text text="{v2>Supplier/Address/State}" />
+                  <m:Label text="{i18n>supplierZipCodeLabel}" />
+                  <m:Text text="{v2>Supplier/Address/ZipCode}" />
+                  <m:Label text="{i18n>supplierCountryLabel}" />
+                  <m:Text text="{v2>Supplier/Address/Country}" />
+                </form:content>
+              </form:SimpleForm>
+            </blocks>
+          </ObjectPageSubSection>
+        </subSections>
+      </ObjectPageSection>
+    </sections>
+  </ObjectPageLayout>
+</mvc:View>
