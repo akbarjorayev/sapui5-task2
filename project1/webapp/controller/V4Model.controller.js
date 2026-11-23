@@ -50,6 +50,8 @@ sap.ui.define(
 
         return {
           ok: true,
+          editMode: oProduct.editMode,
+          editContext: oProduct.editContext,
           product: {
             Name: sName,
             Description: sDescription,
@@ -76,6 +78,28 @@ sap.ui.define(
           this.getModel("productDialog").getData(),
         );
         if (!oResult.ok) {
+          return;
+        }
+
+        if (oResult.editMode) {
+          const oContext = oResult.editContext;
+          const oProduct = oResult.product;
+
+          Promise.all([
+            oContext.setProperty("Name", oProduct.Name),
+            oContext.setProperty("Description", oProduct.Description),
+            oContext.setProperty("ReleaseDate", oProduct.ReleaseDate),
+            oContext.setProperty("DiscontinuedDate", oProduct.DiscontinuedDate),
+            oContext.setProperty("Rating", oProduct.Rating),
+            oContext.setProperty("Price", oProduct.Price),
+          ])
+            .then(() => {
+              MessageToast.show(this.getText("v4EditSuccessMessage"));
+              this.onProductDialogClose();
+            })
+            .catch(() => {
+              MessageBox.error(this.getText("v4EditErrorMessage"));
+            });
           return;
         }
 
@@ -106,6 +130,7 @@ sap.ui.define(
             DiscontinuedDate: null,
             Rating: 0,
             Price: "",
+            editMode: false,
           };
 
           const oProductDialogModel = new JSONModel(oProduct);
@@ -122,6 +147,38 @@ sap.ui.define(
 
       onProductDialogAfterClose() {
         this.byId("v4ProductDialog").destroy();
+      },
+
+      onEditRecord(oEvent) {
+        const oContext = oEvent.getSource().getBindingContext("v4");
+        const oProductData = oContext.getObject();
+
+        Fragment.load({
+          id: this.getView().getId(),
+          name: "project1.view.fragment.V4ProductDialog",
+          controller: this,
+        }).then((oDialog) => {
+          const oProduct = {
+            Name: oProductData.Name,
+            Description: oProductData.Description,
+            ReleaseDate: this._toDateString(oProductData.ReleaseDate),
+            DiscontinuedDate: this._toDateString(oProductData.DiscontinuedDate),
+            Rating: oProductData.Rating,
+            Price: oProductData.Price,
+            editMode: true,
+            editContext: oContext,
+          };
+
+          const oProductDialogModel = new JSONModel(oProduct);
+          this.getView().setModel(oProductDialogModel, "productDialog");
+
+          this.getView().addDependent(oDialog);
+          oDialog.open();
+        });
+      },
+
+      _toDateString(sDate) {
+        return sDate ? sDate.split("T")[0] : "";
       },
 
       onDeleteRecord() {

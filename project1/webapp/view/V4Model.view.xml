@@ -35,6 +35,9 @@
             <Column>
                 <Text text="{i18n>priceColumn}" />
             </Column>
+            <Column>
+                <Text text="{i18n>v4EditColumn}" />
+            </Column>
         </columns>
         <items>
             <ColumnListItem>
@@ -48,6 +51,7 @@
                         text="{path: 'v4>DiscontinuedDate', type: 'sap.ui.model.odata.type.DateTimeOffset', constraints: {precision: 3}, formatOptions: {pattern: 'MMM d, y'}}" />
                     <RatingIndicator value="{v4>Rating}" editable="false" />
                     <ObjectNumber number="{v4>Price}" />
+                    <Button text="{i18n>v4EditButton}" press=".onEditRecord" />
                 </cells>
             </ColumnListItem>
         </items>
