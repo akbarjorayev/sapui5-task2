@@ -56,7 +56,9 @@
       "minUI5Version": "1.153.0",
       "libs": {
         "sap.m": {},
-        "sap.ui.core": {}
+        "sap.ui.core": {},
+        "sap.uxap": {},
+        "sap.ui.layout": {}
       }
     },
     "contentDensities": {
@@ -105,12 +107,26 @@
           "name": "RouteMain",
           "pattern": ":?query:",
           "target": ["TargetMain"]
+        },
+        {
+          "name": "RouteTab",
+          "pattern": "tab/{tabKey}",
+          "target": ["TargetMain"]
+        },
+        {
+          "name": "RouteProduct",
+          "pattern": "Product/{ProductID}",
+          "target": ["TargetProduct"]
         }
       ],
       "targets": {
         "TargetMain": {
           "id": "Main",
           "name": "Main"
+        },
+        "TargetProduct": {
+          "id": "Product",
+          "name": "Product"
         }
       }
     },

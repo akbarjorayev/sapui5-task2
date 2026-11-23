@@ -1,10 +1,16 @@
 <mvc:View
+    controllerName="project1.controller.V4Model"
     xmlns:mvc="sap.ui.core.mvc"
     xmlns="sap.m">
-    <Table id="v4ProductsTable" items="{v4>/Products}">
+    <Table id="v4ProductsTable" items="{v4>/Products}" mode="MultiSelect">
         <headerToolbar>
             <OverflowToolbar>
                 <Title text="{i18n>productsTableTitle}" />
+                <ToolbarSpacer />
+                <Button text="{i18n>v4AddRecordButton}" press=".onAddRecord"
+                    icon="sap-icon://add" />
+                <Button text="{i18n>v4DeleteRecordButton}" press=".onDeleteRecord"
+                    icon="sap-icon://delete" />
             </OverflowToolbar>
         </headerToolbar>
         <columns>
