@@ -7,6 +7,8 @@
             <OverflowToolbar>
                 <Title text="{i18n>productsTableTitle}" />
                 <ToolbarSpacer />
+                <Button text="{i18n>v4AddRecordButton}" press=".onAddRecord"
+                    icon="sap-icon://add" />
                 <Button text="{i18n>v4DeleteRecordButton}" press=".onDeleteRecord"
                     icon="sap-icon://delete" />
             </OverflowToolbar>
